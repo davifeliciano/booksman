@@ -5,11 +5,12 @@ import { CreateReview } from "../protocols/review";
 import * as booksRepository from "./../repositories/books-repository";
 
 export async function getBooks() {
-  return await booksRepository.getBooks();
+  return booksRepository.getBooks();
 }
 
 export async function getBook(id: number) {
   const book = await booksRepository.getBook(id);
+
   if (!book) {
     throw notFoundError();
   }
@@ -18,11 +19,15 @@ export async function getBook(id: number) {
 }
 
 export async function createBook(book: CreateBook) {
-  return await booksRepository.createBook(book);
+  return booksRepository.createBook(book);
 }
 
 export async function reviewBook(review: CreateReview) {
-  await getBook(review.bookId); // check if the book exists
+  const book = await getBook(review.bookId);
 
-  return await booksRepository.reviewBook(review);
+  if (!book) {
+    throw notFoundError();
+  }
+
+  return booksRepository.reviewBook(review);
 }

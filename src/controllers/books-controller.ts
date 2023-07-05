@@ -22,13 +22,13 @@ export async function getBook(req: Request, res: Response) {
 }
 
 export async function createBook(req: Request, res: Response) {
-  const book = req.body as CreateBook;
+  const book = res.locals.body as CreateBook;
   await bookService.createBook(book);
   res.sendStatus(httpStatus.CREATED);
 }
 
 export async function reviewBook(req: Request, res: Response) {
-  const review = req.body as CreateReview;
+  const review = res.locals.body as CreateReview;
 
   if (!isIdValid(review.bookId)) return res.sendStatus(httpStatus.BAD_REQUEST);
 
